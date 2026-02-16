@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FinVault – Bank Account + Locker Key System </title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,Segoe UI,Arial}
+    body{
+      background: linear-gradient(135deg,#0f172a,#111827,#0b1220);
+      min-height:100vh;
+      color:#e5e7eb;
+      display:flex;
+      justify-content:center;
+      padding:30px;
+    }
+    .app{
+      width:min(1200px, 100%);
+      display:grid;
+      grid-template-columns: 380px 1fr;
+      gap:18px;
+    }
+    .card{
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius:18px;
+      padding:18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+    }
+    .title{
+      font-size:22px;
+      font-weight:800;
+      letter-spacing:0.3px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:14px;
+    }
+    .badge{
+      font-size:12px;
+      padding:4px 10px;
+      border-radius:999px;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.25);
+      color:#86efac;
+      font-weight:700;
+    }
+    .sub{
+      color:#9ca3af;
+      margin-bottom:14px;
+      font-size:13px;
+      line-height:1.4;
+    }
+    label{
+      font-size:12px;
+      color:#cbd5e1;
+      display:block;
+      margin:10px 0 6px;
+    }
+    input, select{
+      width:100%;
+      padding:11px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.25);
+      color:#e5e7eb;
+      outline:none;
+    }
+    input::placeholder{color:#94a3b8}
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .btn{
+      width:100%;
+      margin-top:12px;
+      padding:11px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(59,130,246,0.18);
+      color:#bfdbfe;
+      font-weight:800;
+      cursor:pointer;
+      transition:0.2s;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(59,130,246,0.26)}
+    .btn.danger{
+      background: rgba(239,68,68,0.14);
+      color:#fecaca;
+    }
+    .btn.danger:hover{background: rgba(239,68,68,0.22)}
+    .btn.gray{
+      background: rgba(148,163,184,0.12);
+      color:#e2e8f0;
+    }
+    .btn.gray:hover{background: rgba(148,163,184,0.18)}
+    .rightTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    .search{
+      flex:1;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .search input{margin:0}
+    table{
+      width:100%;
+      border-collapse:collapse;
+      overflow:hidden;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.10);
+    }
+    th, td{
+      text-align:left;
+      padding:12px 12px;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      font-size:13px;
+    }
+    th{
+      background: rgba(255,255,255,0.06);
+      color:#e2e8f0;
+      font-size:12px;
+      letter-spacing:0.3px;
+      text-transform:uppercase;
+    }
+    tr:hover td{background: rgba(255,255,255,0.03)}
+    .pill{
+      display:inline-block;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.22);
+      color:#e5e7eb;
+      font-weight:700;
+    }
+    .msg{
+      margin-top:12px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.20);
+      color:#e5e7eb;
+      font-size:13px;
+      line-height:1.35;
+      min-height:44px;
+      word-break: break-word;
+    }
+    .ok{border-color: rgba(34,197,94,0.25); color:#bbf7d0}
+    .warn{border-color: rgba(245,158,11,0.25); color:#fde68a}
+    .bad{border-color: rgba(239,68,68,0.25); color:#fecaca}
+    .muted{color:#9ca3af}
+    .hint{
+      margin-top:10px;
+      font-size:12px;
+      color:#94a3b8;
+      line-height:1.4;
+    }
+    @media (max-width: 950px){
+      .app{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <!-- LEFT PANEL -->
+    <div class="card">
+      <div class="title">🏦 Shree's Bank <span class="badge">MySQL + Backend</span></div>
+      <div class="sub">
+        Backend: <b>Node.js</b> | Database: <b>MySQL</b> | Port: <b>5000</b>
+      </div>
+
+      <label>Operation</label>
+      <select id="op" onchange="onOpChange()">
+        <option value="create">Create Account</option>
+        <option value="deposit">Deposit</option>
+        <option value="withdraw">Withdraw</option>
+        <option value="fullupdate">Update Account (Name + Number)</option>
+        <option value="delete">Delete Account</option>
+        <option value="locker_create">Create Locker</option>
+        <option value="locker_view">View Locker Key</option>
+        <option value="locker_access">Access Locker</option>
+      </select>
+
+      <div class="row">
+        <div>
+          <label id="lblAccNo">Account No</label>
+          <input id="accNo" type="number" placeholder="Eg: 1001">
+        </div>
+        <div>
+          <label id="lblAmount">Amount (₹)</label>
+          <input id="amount" type="number" placeholder="Eg: 500">
+        </div>
+      </div>
+
+      <label id="lblName">Name</label>
+      <input id="name" type="text" placeholder="Eg: Shreedhar">
+
+      <label id="lblNewAcc" style="display:none;">New Account No</label>
+      <input id="newAccNo" style="display:none;" type="number" placeholder="Eg: 2001">
+
+      <label id="lblLockerKey" style="display:none;">Locker Key</label>
+      <input id="lockerKey" style="display:none;" type="text" placeholder="Eg: LOCK-XXXX-YYYY">
+
+      <button class="btn" onclick="handleAction()">Run Operation</button>
+      <button class="btn gray" onclick="resetForm()">Clear</button>
+      <button class="btn danger" onclick="wipeAll()">Wipe All Data</button>
+
+      <div id="msg" class="msg muted">Ready.</div>
+
+      <div class="hint" id="hintBox"></div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="card">
+      <div class="rightTop">
+        <div class="title" style="margin:0;">📋 Accounts</div>
+        <div class="search">
+          <input id="search" type="text" placeholder="Search by name / account no..." oninput="render()">
+          <button class="btn" style="width:auto; padding:10px 14px;" onclick="exportJSON()">Export</button>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Acc No</th>
+            <th>Name</th>
+            <th>Balance</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+
+      <div class="sub" style="margin-top:12px;">
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  const API = "http://localhost:5000/api";
+
+  function setMsg(text, type="muted"){
+    const el = document.getElementById("msg");
+    el.className = "msg " + type;
+    el.innerText = text;
+  }
+
+  function escapeHtml(str){
+    return str.replaceAll("&","&amp;")
+              .replaceAll("<","&lt;")
+              .replaceAll(">","&gt;")
+              .replaceAll('"',"&quot;")
+              .replaceAll("'","&#039;");
+  }
+
+  function toMoney(x){
+    return "₹ " + Number(x).toFixed(2);
+  }
+
+  function resetForm(){
+    document.getElementById("accNo").value = "";
+    document.getElementById("amount").value = "";
+    document.getElementById("name").value = "";
+    document.getElementById("newAccNo").value = "";
+    document.getElementById("lockerKey").value = "";
+    document.getElementById("op").value = "create";
+    setMsg("Ready.", "muted");
+    onOpChange();
+  }
+
+  async function apiGET(url){
+    const res = await fetch(url);
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.msg || "Request failed");
+    return data;
+  }
+
+  async function apiPOST(url, body){
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.msg || "Request failed");
+    return data;
+  }
+
+  async function apiPUT(url, body){
+    const res = await fetch(url, {
+      method: "PUT",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.msg || "Request failed");
+    return data;
+  }
+
+  async function apiDELETE(url){
+    const res = await fetch(url, { method: "DELETE" });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.msg || "Request failed");
+    return data;
+  }
+
+  function onOpChange(){
+    const op = document.getElementById("op").value;
+
+    const lblAccNo = document.getElementById("lblAccNo");
+    const lblAmount = document.getElementById("lblAmount");
+    const lblName = document.getElementById("lblName");
+
+    const lblNewAcc = document.getElementById("lblNewAcc");
+    const newAccNo = document.getElementById("newAccNo");
+
+    const lblLockerKey = document.getElementById("lblLockerKey");
+    const lockerKey = document.getElementById("lockerKey");
+
+    const amount = document.getElementById("amount");
+    const name = document.getElementById("name");
+
+    const hintBox = document.getElementById("hintBox");
+
+    // default
+    amount.style.display = "block";
+    document.getElementById("lblAmount").style.display = "block";
+    name.style.display = "block";
+    lblName.style.display = "block";
+
+    lblNewAcc.style.display = "none";
+    newAccNo.style.display = "none";
+
+    lblLockerKey.style.display = "none";
+    lockerKey.style.display = "none";
+
+    hintBox.innerText = "";
+
+    if(op === "create"){
+      hintBox.innerText = "Create new account: Acc No + Name + Initial Balance.";
+    }
+    else if(op === "deposit"){
+      hintBox.innerText = "Deposit: Acc No + Amount.";
+      name.style.display = "none";
+      lblName.style.display = "none";
+    }
+    else if(op === "withdraw"){
+      hintBox.innerText = "Withdraw: Acc No + Amount.";
+      name.style.display = "none";
+      lblName.style.display = "none";
+    }
+    else if(op === "delete"){
+      hintBox.innerText = "Delete: Only Acc No needed.";
+      name.style.display = "none";
+      lblName.style.display = "none";
+      amount.style.display = "none";
+      lblAmount.style.display = "none";
+    }
+    else if(op === "fullupdate"){
+      hintBox.innerText = "Update Account: Old Acc No + New Acc No + New Name.";
+      amount.style.display = "none";
+      lblAmount.style.display = "none";
+
+      lblNewAcc.style.display = "block";
+      newAccNo.style.display = "block";
+    }
+    else if(op === "locker_create"){
+      hintBox.innerText = "Create Locker: Only Acc No. (Random key generate hoga aur kabhi change nahi hoga.)";
+      name.style.display = "none";
+      lblName.style.display = "none";
+      amount.style.display = "none";
+      lblAmount.style.display = "none";
+    }
+    else if(op === "locker_view"){
+      hintBox.innerText = "View Locker Key: Only Acc No.";
+      name.style.display = "none";
+      lblName.style.display = "none";
+      amount.style.display = "none";
+      lblAmount.style.display = "none";
+    }
+    else if(op === "locker_access"){
+      hintBox.innerText = "Access Locker: Acc No + Locker Key.";
+      name.style.display = "none";
+      lblName.style.display = "none";
+      amount.style.display = "none";
+      lblAmount.style.display = "none";
+
+      lblLockerKey.style.display = "block";
+      lockerKey.style.display = "block";
+    }
+  }
+
+  async function handleAction(){
+    const op = document.getElementById("op").value;
+    const accNo = Number(document.getElementById("accNo").value);
+    const amount = Number(document.getElementById("amount").value);
+    const name = document.getElementById("name").value;
+
+    const newAccNo = Number(document.getElementById("newAccNo").value);
+    const lockerKey = document.getElementById("lockerKey").value;
+
+    if(!accNo || accNo <= 0){
+      setMsg("Valid Account No enter kar bhai.", "warn");
+      return;
+    }
+
+    try{
+      setMsg("Processing...", "muted");
+
+      // CREATE
+      if(op === "create"){
+        if(!name || name.trim().length < 2){
+          setMsg("Name enter kar (min 2 letters).", "warn");
+          return;
+        }
+
+        const initBal = isNaN(amount) ? 0 : amount;
+
+        await apiPOST(`${API}/accounts`, {
+          acc_no: accNo,
+          name: name.trim(),
+          balance: initBal
+        });
+
+        setMsg("Account created successfully!", "ok");
+      }
+
+      // DEPOSIT
+      else if(op === "deposit"){
+        if(!amount || amount <= 0){
+          setMsg("Deposit amount > 0 hona chahiye.", "warn");
+          return;
+        }
+
+        const r = await apiPOST(`${API}/accounts/${accNo}/deposit`, { amount });
+        setMsg(`Deposit successful! Balance: ${toMoney(r.after)}`, "ok");
+      }
+
+      // WITHDRAW
+      else if(op === "withdraw"){
+        if(!amount || amount <= 0){
+          setMsg("Withdraw amount > 0 hona chahiye.", "warn");
+          return;
+        }
+
+        const r = await apiPOST(`${API}/accounts/${accNo}/withdraw`, { amount });
+        setMsg(`Withdraw successful! Balance: ${toMoney(r.after)}`, "ok");
+      }
+
+      // FULL UPDATE
+      else if(op === "fullupdate"){
+        if(!newAccNo || newAccNo <= 0){
+          setMsg("New Account No valid enter kar.", "warn");
+          return;
+        }
+        if(!name || name.trim().length < 2){
+          setMsg("New name enter kar (min 2 letters).", "warn");
+          return;
+        }
+
+        await apiPUT(`${API}/accounts/${accNo}/full-update`, {
+          new_acc_no: newAccNo,
+          name: name.trim()
+        });
+
+        setMsg("Account updated (Name + Number) ✅", "ok");
+      }
+
+      // DELETE
+      else if(op === "delete"){
+        if(!confirm("Sure? Account delete ho jayega.")) return;
+
+        await apiDELETE(`${API}/accounts/${accNo}`);
+        setMsg("Account deleted successfully!", "ok");
+      }
+
+      // LOCKER CREATE
+      else if(op === "locker_create"){
+        const r = await apiPOST(`${API}/accounts/${accNo}/locker`, {});
+        setMsg(`Locker created ✅ Key: ${r.locker_key}`, "ok");
+      }
+
+      // LOCKER VIEW
+      else if(op === "locker_view"){
+        const r = await apiGET(`${API}/accounts/${accNo}/locker`);
+        setMsg(`Locker Found ✅ Key: ${r.locker_key}`, "ok");
+      }
+
+      // LOCKER ACCESS
+      else if(op === "locker_access"){
+        if(!lockerKey || lockerKey.trim().length < 8){
+          setMsg("Locker key enter kar bhai.", "warn");
+          return;
+        }
+
+        const r = await apiPOST(`${API}/locker/access`, {
+          acc_no: accNo,
+          locker_key: lockerKey.trim()
+        });
+
+        setMsg(r.msg, "ok");
+      }
+
+      await render();
+    }
+    catch(err){
+      setMsg(err.message, "bad");
+    }
+  }
+
+  async function render(){
+    const tbody = document.getElementById("tbody");
+    const q = document.getElementById("search").value.trim().toLowerCase();
+
+    try{
+      let db = await apiGET(`${API}/accounts`);
+      db.sort((a,b) => a.acc_no - b.acc_no);
+
+      let filtered = db.filter(a => {
+        if(!q) return true;
+        return String(a.acc_no).includes(q) || a.name.toLowerCase().includes(q);
+      });
+
+      if(filtered.length === 0){
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" style="padding:18px; color:#9ca3af;">
+              No accounts found.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(a => `
+        <tr>
+          <td><span class="pill">${a.acc_no}</span></td>
+          <td>${escapeHtml(a.name)}</td>
+          <td><span class="pill">${toMoney(a.balance)}</span></td>
+          <td style="color:#86efac; font-weight:800;">ACTIVE</td>
+        </tr>
+      `).join("");
+    }
+    catch(err){
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="4" style="padding:18px; color:#fecaca;">
+            Backend not reachable. Start server.js
+          </td>
+        </tr>
+      `;
+    }
+  }
+
+  async function wipeAll(){
+    if(confirm("Sure? All bank data will be deleted from MySQL.")){
+      try{
+        await apiDELETE(`${API}/wipe`);
+        setMsg("All data wiped from MySQL.", "warn");
+        await render();
+      }catch(err){
+        setMsg(err.message, "bad");
+      }
+    }
+  }
+
+  async function exportJSON(){
+    try{
+      const db = await apiGET(`${API}/accounts`);
+      const text = JSON.stringify(db, null, 2);
+      await navigator.clipboard.writeText(text);
+      setMsg("Exported JSON copied to clipboard ✅", "ok");
+    }catch(err){
+      setMsg(err.message, "bad");
+    }
+  }
+
+  onOpChange();
+  render();
+</script>
+</body>
+</html>

@@ -3,230 +3,289 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FinVault – Bank Account + Locker Key System </title>
+  <title>FinVault Banks - Admin</title>
+
   <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,Segoe UI,Arial}
     body{
-      background: linear-gradient(135deg,#0f172a,#111827,#0b1220);
       min-height:100vh;
-      color:#e5e7eb;
+      color:#0f172a;
       display:flex;
       justify-content:center;
-      padding:30px;
+      padding:28px;
+      background:
+        radial-gradient(1200px 600px at 18% 15%, rgba(59,130,246,0.35), transparent 55%),
+        radial-gradient(1000px 520px at 85% 30%, rgba(34,197,94,0.28), transparent 55%),
+        radial-gradient(900px 520px at 50% 95%, rgba(236,72,153,0.22), transparent 55%),
+        linear-gradient(135deg,#f8fafc,#ecfeff,#fff7ed);
     }
+
     .app{
-      width:min(1200px, 100%);
+      width:min(1300px, 100%);
       display:grid;
-      grid-template-columns: 380px 1fr;
-      gap:18px;
+      grid-template-columns: 420px 1fr;
+      gap:16px;
     }
+
     .card{
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius:18px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(15,23,42,0.08);
+      border-radius:22px;
       padding:18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      box-shadow: 0 18px 40px rgba(15,23,42,0.10);
       backdrop-filter: blur(10px);
     }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+
     .title{
       font-size:22px;
-      font-weight:800;
-      letter-spacing:0.3px;
+      font-weight:950;
+      letter-spacing:0.2px;
       display:flex;
       align-items:center;
       gap:10px;
-      margin-bottom:14px;
+      color:#0f172a;
     }
+
     .badge{
       font-size:12px;
-      padding:4px 10px;
+      padding:5px 10px;
       border-radius:999px;
-      background: rgba(34,197,94,0.12);
-      border: 1px solid rgba(34,197,94,0.25);
-      color:#86efac;
-      font-weight:700;
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.20);
+      color:#1d4ed8;
+      font-weight:950;
+      white-space:nowrap;
     }
-    .sub{
-      color:#9ca3af;
-      margin-bottom:14px;
-      font-size:13px;
-      line-height:1.4;
+
+    .lang select{
+      width:auto;
+      padding:9px 10px;
+      border-radius:14px;
+      border:1px solid rgba(15,23,42,0.12);
+      background: rgba(255,255,255,0.85);
+      color:#0f172a;
+      outline:none;
+      font-weight:900;
     }
+
+    .nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    .nav a{
+      text-decoration:none;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(15,23,42,0.10);
+      background: rgba(255,255,255,0.75);
+      font-weight:950;
+      color:#0f172a;
+      transition:0.18s;
+    }
+    .nav a:hover{transform: translateY(-1px)}
+    .nav a.primary{
+      background: linear-gradient(135deg, rgba(59,130,246,0.95), rgba(99,102,241,0.95));
+      color:#fff;
+      box-shadow: 0 12px 22px rgba(59,130,246,0.16);
+      border-color: transparent;
+    }
+
     label{
       font-size:12px;
-      color:#cbd5e1;
+      color:#334155;
       display:block;
       margin:10px 0 6px;
+      font-weight:900;
     }
+
     input, select{
       width:100%;
-      padding:11px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.25);
-      color:#e5e7eb;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(15,23,42,0.12);
+      background: rgba(255,255,255,0.85);
+      color:#0f172a;
       outline:none;
+      transition:0.2s;
     }
-    input::placeholder{color:#94a3b8}
+
+    input:focus, select:focus{
+      border-color: rgba(59,130,246,0.55);
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.14);
+    }
+
+    input::placeholder{color:#64748b}
+
     .row{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:10px;
     }
+
     .btn{
       width:100%;
       margin-top:12px;
-      padding:11px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(59,130,246,0.18);
-      color:#bfdbfe;
-      font-weight:800;
-      cursor:pointer;
-      transition:0.2s;
-    }
-    .btn:hover{transform: translateY(-1px); background: rgba(59,130,246,0.26)}
-    .btn.danger{
-      background: rgba(239,68,68,0.14);
-      color:#fecaca;
-    }
-    .btn.danger:hover{background: rgba(239,68,68,0.22)}
-    .btn.gray{
-      background: rgba(148,163,184,0.12);
-      color:#e2e8f0;
-    }
-    .btn.gray:hover{background: rgba(148,163,184,0.18)}
-    .rightTop{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:12px;
-    }
-    .search{
-      flex:1;
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    .search input{margin:0}
-    table{
-      width:100%;
-      border-collapse:collapse;
-      overflow:hidden;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,0.10);
-    }
-    th, td{
-      text-align:left;
       padding:12px 12px;
-      border-bottom:1px solid rgba(255,255,255,0.06);
-      font-size:13px;
+      border-radius:16px;
+      border:1px solid rgba(15,23,42,0.10);
+      background: linear-gradient(135deg, rgba(59,130,246,0.95), rgba(99,102,241,0.95));
+      color:#ffffff;
+      font-weight:950;
+      cursor:pointer;
+      transition:0.18s;
+      box-shadow: 0 12px 22px rgba(59,130,246,0.18);
     }
-    th{
-      background: rgba(255,255,255,0.06);
-      color:#e2e8f0;
-      font-size:12px;
-      letter-spacing:0.3px;
-      text-transform:uppercase;
+    .btn:hover{transform: translateY(-1px); filter: brightness(1.03)}
+
+    .btn.green{
+      background: linear-gradient(135deg, rgba(34,197,94,0.95), rgba(16,185,129,0.95));
+      box-shadow: 0 12px 22px rgba(34,197,94,0.18);
     }
-    tr:hover td{background: rgba(255,255,255,0.03)}
-    .pill{
-      display:inline-block;
-      padding:5px 10px;
-      border-radius:999px;
-      font-size:12px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.22);
-      color:#e5e7eb;
-      font-weight:700;
+
+    .btn.red{
+      background: linear-gradient(135deg, rgba(239,68,68,0.95), rgba(244,63,94,0.95));
+      box-shadow: 0 12px 22px rgba(239,68,68,0.18);
     }
+
+    .btn.gray{
+      background: rgba(15,23,42,0.06);
+      color:#0f172a;
+      box-shadow:none;
+    }
+
     .msg{
       margin-top:12px;
       padding:12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.20);
-      color:#e5e7eb;
+      border-radius:16px;
+      border:1px solid rgba(15,23,42,0.10);
+      background: rgba(255,255,255,0.75);
       font-size:13px;
       line-height:1.35;
       min-height:44px;
       word-break: break-word;
     }
-    .ok{border-color: rgba(34,197,94,0.25); color:#bbf7d0}
-    .warn{border-color: rgba(245,158,11,0.25); color:#fde68a}
-    .bad{border-color: rgba(239,68,68,0.25); color:#fecaca}
-    .muted{color:#9ca3af}
-    .hint{
-      margin-top:10px;
-      font-size:12px;
-      color:#94a3b8;
-      line-height:1.4;
+
+    .ok{border-color: rgba(34,197,94,0.35); color:#166534}
+    .warn{border-color: rgba(245,158,11,0.35); color:#92400e}
+    .bad{border-color: rgba(239,68,68,0.35); color:#991b1b}
+    .muted{color:#475569}
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      overflow:hidden;
+      border-radius:18px;
+      border:1px solid rgba(15,23,42,0.08);
+      background: rgba(255,255,255,0.65);
     }
-    @media (max-width: 950px){
+
+    th, td{
+      text-align:left;
+      padding:12px 12px;
+      border-bottom:1px solid rgba(15,23,42,0.06);
+      font-size:13px;
+      color:#0f172a;
+      vertical-align:top;
+    }
+
+    th{
+      background: rgba(15,23,42,0.04);
+      font-size:12px;
+      letter-spacing:0.35px;
+      text-transform:uppercase;
+      color:#334155;
+    }
+
+    tr:hover td{background: rgba(59,130,246,0.06)}
+
+    .pill{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid rgba(15,23,42,0.10);
+      background: rgba(255,255,255,0.85);
+      color:#0f172a;
+      font-weight:950;
+      white-space:nowrap;
+    }
+
+    @media (max-width: 980px){
       .app{grid-template-columns:1fr}
     }
   </style>
 </head>
+
 <body>
   <div class="app">
 
-    <!-- LEFT PANEL -->
     <div class="card">
-      <div class="title">🏦 Shree's Bank <span class="badge">MySQL + Backend</span></div>
-      <div class="sub">
-        Backend: <b>Node.js</b> | Database: <b>MySQL</b> | Port: <b>5000</b>
+      <div class="topbar">
+        <div class="title">🏦 FinVault Banks <span class="badge" id="badgeRole">ADMIN</span></div>
+        <div class="lang">
+          <select id="lang" onchange="applyLang()">
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+          </select>
+        </div>
       </div>
 
-      <label>Operation</label>
-      <select id="op" onchange="onOpChange()">
-        <option value="create">Create Account</option>
+      <div class="nav">
+        <a class="primary" href="site.html" id="navAdmin">Admin Panel</a>
+        <a href="requests.html" id="navRequests">Requests</a>
+        <a href="user.html" id="navUser">User Portal</a>
+        <a href="index.html" id="navHome">Home</a>
+      </div>
+
+      <label id="lblOp">Operation</label>
+      <select id="op" onchange="toggleFields()">
         <option value="deposit">Deposit</option>
         <option value="withdraw">Withdraw</option>
-        <option value="fullupdate">Update Account (Name + Number)</option>
+        <option value="update">Full Update (Acc No + Name)</option>
+        <option value="locker">Create Locker (Request)</option>
         <option value="delete">Delete Account</option>
-        <option value="locker_create">Create Locker</option>
-        <option value="locker_view">View Locker Key</option>
-        <option value="locker_access">Access Locker</option>
       </select>
 
-      <div class="row">
-        <div>
-          <label id="lblAccNo">Account No</label>
-          <input id="accNo" type="number" placeholder="Eg: 1001">
-        </div>
+      <label id="lblAccNo">Account No</label>
+      <input id="accNo" type="number" placeholder="Eg: 1001">
+
+      <div class="row" id="rowAmountNewAcc">
         <div>
           <label id="lblAmount">Amount (₹)</label>
           <input id="amount" type="number" placeholder="Eg: 500">
         </div>
+        <div>
+          <label id="lblNewAcc">New Account No</label>
+          <input id="newAccNo" type="number" placeholder="Eg: 2001">
+        </div>
       </div>
 
       <label id="lblName">Name</label>
-      <input id="name" type="text" placeholder="Eg: Shreedhar">
+      <input id="name" type="text" placeholder="Eg: Rahul">
 
-      <label id="lblNewAcc" style="display:none;">New Account No</label>
-      <input id="newAccNo" style="display:none;" type="number" placeholder="Eg: 2001">
-
-      <label id="lblLockerKey" style="display:none;">Locker Key</label>
-      <input id="lockerKey" style="display:none;" type="text" placeholder="Eg: LOCK-XXXX-YYYY">
-
-      <button class="btn" onclick="handleAction()">Run Operation</button>
-      <button class="btn gray" onclick="resetForm()">Clear</button>
-      <button class="btn danger" onclick="wipeAll()">Wipe All Data</button>
+      <button class="btn" onclick="handleAction()" id="btnRun">Run Operation</button>
+      <button class="btn gray" onclick="resetForm()" id="btnClear">Clear</button>
+      <button class="btn red" onclick="wipeAll()" id="btnWipe">Wipe All Data</button>
 
       <div id="msg" class="msg muted">Ready.</div>
-
-      <div class="hint" id="hintBox"></div>
     </div>
 
-    <!-- RIGHT PANEL -->
     <div class="card">
-      <div class="rightTop">
-        <div class="title" style="margin:0;">📋 Accounts</div>
-        <div class="search">
-          <input id="search" type="text" placeholder="Search by name / account no..." oninput="render()">
-          <button class="btn" style="width:auto; padding:10px 14px;" onclick="exportJSON()">Export</button>
-        </div>
+      <div class="topbar" style="margin-bottom:10px;">
+        <div class="title" style="font-size:18px; margin:0;">📋 Accounts</div>
+        <input id="search" type="text" placeholder="Search by name / account no..." oninput="render()">
       </div>
 
       <table>
@@ -235,25 +294,99 @@
             <th>Acc No</th>
             <th>Name</th>
             <th>Balance</th>
-            <th>Status</th>
+            <th>Locker</th>
           </tr>
         </thead>
         <tbody id="tbody"></tbody>
       </table>
 
-      <div class="sub" style="margin-top:12px;">
+      <div style="margin-top:14px;"></div>
+
+      <div class="topbar" style="margin-bottom:10px;">
+        <div class="title" style="font-size:16px; margin:0;">🧾 Transactions (Last 20)</div>
+        <input id="txAcc" type="number" placeholder="Account No" style="max-width:220px;">
       </div>
+
+      <button class="btn green" onclick="loadTx()" style="margin-top:0;">Load Transactions</button>
+
+      <div style="margin-top:12px;"></div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Before</th>
+            <th>After</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyTx"></tbody>
+      </table>
     </div>
 
   </div>
 
 <script>
-  const API = "http://localhost:5000/api";
+  const API = "http://127.0.0.1:5000/api";
+
+  const T = {
+    en: {
+      ready: "Ready.",
+      processing: "Processing...",
+      confirmWipe: "Sure? This will delete everything from MySQL.",
+      confirmDelete: "Sure? Account will be deleted."
+    },
+    hi: {
+      ready: "Ready.",
+      processing: "Processing...",
+      confirmWipe: "Sure? This will delete everything from MySQL.",
+      confirmDelete: "Sure? Account will be deleted."
+    }
+  };
+
+  function lang(){ return document.getElementById("lang").value; }
 
   function setMsg(text, type="muted"){
     const el = document.getElementById("msg");
     el.className = "msg " + type;
     el.innerText = text;
+  }
+
+  function resetForm(){
+    document.getElementById("op").value = "deposit";
+    document.getElementById("accNo").value = "";
+    document.getElementById("amount").value = "";
+    document.getElementById("newAccNo").value = "";
+    document.getElementById("name").value = "";
+    toggleFields();
+    setMsg(T[lang()].ready, "muted");
+  }
+
+  function toggleFields(){
+    const op = document.getElementById("op").value;
+
+    document.getElementById("amount").disabled = true;
+    document.getElementById("newAccNo").disabled = true;
+    document.getElementById("name").disabled = true;
+
+    if(op === "deposit" || op === "withdraw"){
+      document.getElementById("amount").disabled = false;
+    }
+    if(op === "update"){
+      document.getElementById("newAccNo").disabled = false;
+      document.getElementById("name").disabled = false;
+    }
+    if(op === "locker"){
+      document.getElementById("name").disabled = true;
+    }
+    if(op === "delete"){
+      document.getElementById("name").disabled = true;
+    }
+  }
+
+  function toMoney(x){
+    return "₹ " + Number(x).toFixed(2);
   }
 
   function escapeHtml(str){
@@ -264,25 +397,10 @@
               .replaceAll("'","&#039;");
   }
 
-  function toMoney(x){
-    return "₹ " + Number(x).toFixed(2);
-  }
-
-  function resetForm(){
-    document.getElementById("accNo").value = "";
-    document.getElementById("amount").value = "";
-    document.getElementById("name").value = "";
-    document.getElementById("newAccNo").value = "";
-    document.getElementById("lockerKey").value = "";
-    document.getElementById("op").value = "create";
-    setMsg("Ready.", "muted");
-    onOpChange();
-  }
-
   async function apiGET(url){
     const res = await fetch(url);
     const data = await res.json();
-    if(!res.ok) throw new Error(data.msg || "Request failed");
+    if(!res.ok) throw new Error((data.msg || "Request failed") + (data.err ? (" | " + data.err) : ""));
     return data;
   }
 
@@ -293,7 +411,7 @@
       body: JSON.stringify(body)
     });
     const data = await res.json();
-    if(!res.ok) throw new Error(data.msg || "Request failed");
+    if(!res.ok) throw new Error((data.msg || "Request failed") + (data.err ? (" | " + data.err) : ""));
     return data;
   }
 
@@ -304,211 +422,63 @@
       body: JSON.stringify(body)
     });
     const data = await res.json();
-    if(!res.ok) throw new Error(data.msg || "Request failed");
+    if(!res.ok) throw new Error((data.msg || "Request failed") + (data.err ? (" | " + data.err) : ""));
     return data;
   }
 
   async function apiDELETE(url){
     const res = await fetch(url, { method: "DELETE" });
     const data = await res.json();
-    if(!res.ok) throw new Error(data.msg || "Request failed");
+    if(!res.ok) throw new Error((data.msg || "Request failed") + (data.err ? (" | " + data.err) : ""));
     return data;
-  }
-
-  function onOpChange(){
-    const op = document.getElementById("op").value;
-
-    const lblAccNo = document.getElementById("lblAccNo");
-    const lblAmount = document.getElementById("lblAmount");
-    const lblName = document.getElementById("lblName");
-
-    const lblNewAcc = document.getElementById("lblNewAcc");
-    const newAccNo = document.getElementById("newAccNo");
-
-    const lblLockerKey = document.getElementById("lblLockerKey");
-    const lockerKey = document.getElementById("lockerKey");
-
-    const amount = document.getElementById("amount");
-    const name = document.getElementById("name");
-
-    const hintBox = document.getElementById("hintBox");
-
-    // default
-    amount.style.display = "block";
-    document.getElementById("lblAmount").style.display = "block";
-    name.style.display = "block";
-    lblName.style.display = "block";
-
-    lblNewAcc.style.display = "none";
-    newAccNo.style.display = "none";
-
-    lblLockerKey.style.display = "none";
-    lockerKey.style.display = "none";
-
-    hintBox.innerText = "";
-
-    if(op === "create"){
-      hintBox.innerText = "Create new account: Acc No + Name + Initial Balance.";
-    }
-    else if(op === "deposit"){
-      hintBox.innerText = "Deposit: Acc No + Amount.";
-      name.style.display = "none";
-      lblName.style.display = "none";
-    }
-    else if(op === "withdraw"){
-      hintBox.innerText = "Withdraw: Acc No + Amount.";
-      name.style.display = "none";
-      lblName.style.display = "none";
-    }
-    else if(op === "delete"){
-      hintBox.innerText = "Delete: Only Acc No needed.";
-      name.style.display = "none";
-      lblName.style.display = "none";
-      amount.style.display = "none";
-      lblAmount.style.display = "none";
-    }
-    else if(op === "fullupdate"){
-      hintBox.innerText = "Update Account: Old Acc No + New Acc No + New Name.";
-      amount.style.display = "none";
-      lblAmount.style.display = "none";
-
-      lblNewAcc.style.display = "block";
-      newAccNo.style.display = "block";
-    }
-    else if(op === "locker_create"){
-      hintBox.innerText = "Create Locker: Only Acc No. (Random key generate hoga aur kabhi change nahi hoga.)";
-      name.style.display = "none";
-      lblName.style.display = "none";
-      amount.style.display = "none";
-      lblAmount.style.display = "none";
-    }
-    else if(op === "locker_view"){
-      hintBox.innerText = "View Locker Key: Only Acc No.";
-      name.style.display = "none";
-      lblName.style.display = "none";
-      amount.style.display = "none";
-      lblAmount.style.display = "none";
-    }
-    else if(op === "locker_access"){
-      hintBox.innerText = "Access Locker: Acc No + Locker Key.";
-      name.style.display = "none";
-      lblName.style.display = "none";
-      amount.style.display = "none";
-      lblAmount.style.display = "none";
-
-      lblLockerKey.style.display = "block";
-      lockerKey.style.display = "block";
-    }
   }
 
   async function handleAction(){
     const op = document.getElementById("op").value;
     const accNo = Number(document.getElementById("accNo").value);
     const amount = Number(document.getElementById("amount").value);
-    const name = document.getElementById("name").value;
-
     const newAccNo = Number(document.getElementById("newAccNo").value);
-    const lockerKey = document.getElementById("lockerKey").value;
+    const name = document.getElementById("name").value.trim();
 
     if(!accNo || accNo <= 0){
-      setMsg("Valid Account No enter kar bhai.", "warn");
+      setMsg("Valid account number enter kar.", "warn");
       return;
     }
 
     try{
-      setMsg("Processing...", "muted");
+      setMsg(T[lang()].processing, "muted");
 
-      // CREATE
-      if(op === "create"){
-        if(!name || name.trim().length < 2){
-          setMsg("Name enter kar (min 2 letters).", "warn");
-          return;
-        }
-
-        const initBal = isNaN(amount) ? 0 : amount;
-
-        await apiPOST(`${API}/accounts`, {
-          acc_no: accNo,
-          name: name.trim(),
-          balance: initBal
-        });
-
-        setMsg("Account created successfully!", "ok");
-      }
-
-      // DEPOSIT
-      else if(op === "deposit"){
-        if(!amount || amount <= 0){
-          setMsg("Deposit amount > 0 hona chahiye.", "warn");
-          return;
-        }
-
+      if(op === "deposit"){
+        if(!amount || amount <= 0) return setMsg("Deposit amount > 0 hona chahiye.", "warn");
         const r = await apiPOST(`${API}/accounts/${accNo}/deposit`, { amount });
-        setMsg(`Deposit successful! Balance: ${toMoney(r.after)}`, "ok");
+        setMsg(`Deposit OK. Balance: ${toMoney(r.after)}`, "ok");
       }
 
-      // WITHDRAW
       else if(op === "withdraw"){
-        if(!amount || amount <= 0){
-          setMsg("Withdraw amount > 0 hona chahiye.", "warn");
-          return;
-        }
-
+        if(!amount || amount <= 0) return setMsg("Withdraw amount > 0 hona chahiye.", "warn");
         const r = await apiPOST(`${API}/accounts/${accNo}/withdraw`, { amount });
-        setMsg(`Withdraw successful! Balance: ${toMoney(r.after)}`, "ok");
+        setMsg(`Withdraw OK. Balance: ${toMoney(r.after)}`, "ok");
       }
 
-      // FULL UPDATE
-      else if(op === "fullupdate"){
-        if(!newAccNo || newAccNo <= 0){
-          setMsg("New Account No valid enter kar.", "warn");
-          return;
-        }
-        if(!name || name.trim().length < 2){
-          setMsg("New name enter kar (min 2 letters).", "warn");
-          return;
-        }
-
-        await apiPUT(`${API}/accounts/${accNo}/full-update`, {
-          new_acc_no: newAccNo,
-          name: name.trim()
-        });
-
-        setMsg("Account updated (Name + Number) ✅", "ok");
+      else if(op === "update"){
+        if(!newAccNo || newAccNo <= 0) return setMsg("New account number enter kar.", "warn");
+        if(name.length < 2) return setMsg("Name valid enter kar.", "warn");
+        await apiPUT(`${API}/accounts/${accNo}/full-update`, { new_acc_no: newAccNo, name });
+        setMsg("Account update ho gaya.", "ok");
       }
 
-      // DELETE
-      else if(op === "delete"){
-        if(!confirm("Sure? Account delete ho jayega.")) return;
-
-        await apiDELETE(`${API}/accounts/${accNo}`);
-        setMsg("Account deleted successfully!", "ok");
-      }
-
-      // LOCKER CREATE
-      else if(op === "locker_create"){
-        const r = await apiPOST(`${API}/accounts/${accNo}/locker`, {});
-        setMsg(`Locker created ✅ Key: ${r.locker_key}`, "ok");
-      }
-
-      // LOCKER VIEW
-      else if(op === "locker_view"){
-        const r = await apiGET(`${API}/accounts/${accNo}/locker`);
-        setMsg(`Locker Found ✅ Key: ${r.locker_key}`, "ok");
-      }
-
-      // LOCKER ACCESS
-      else if(op === "locker_access"){
-        if(!lockerKey || lockerKey.trim().length < 8){
-          setMsg("Locker key enter kar bhai.", "warn");
-          return;
-        }
-
-        const r = await apiPOST(`${API}/locker/access`, {
+      else if(op === "locker"){
+        await apiPOST(`${API}/requests`, {
           acc_no: accNo,
-          locker_key: lockerKey.trim()
+          request_type: "CREATE_LOCKER",
+          payload: {}
         });
+        setMsg("Locker request create ho gaya. Requests page se approve kar.", "warn");
+      }
 
+      else if(op === "delete"){
+        if(!confirm(T[lang()].confirmDelete)) return;
+        const r = await apiDELETE(`${API}/accounts/${accNo}`);
         setMsg(r.msg, "ok");
       }
 
@@ -524,70 +494,94 @@
     const q = document.getElementById("search").value.trim().toLowerCase();
 
     try{
-      let db = await apiGET(`${API}/accounts`);
-      db.sort((a,b) => a.acc_no - b.acc_no);
+      let rows = await apiGET(`${API}/accounts`);
+      rows.sort((a,b) => a.acc_no - b.acc_no);
 
-      let filtered = db.filter(a => {
+      rows = rows.filter(a => {
         if(!q) return true;
         return String(a.acc_no).includes(q) || a.name.toLowerCase().includes(q);
       });
 
-      if(filtered.length === 0){
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="4" style="padding:18px; color:#9ca3af;">
-              No accounts found.
-            </td>
-          </tr>
-        `;
+      if(rows.length === 0){
+        tbody.innerHTML = `<tr><td colspan="4" style="padding:18px; color:#475569;">No accounts found.</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = filtered.map(a => `
+      const lockerMap = {};
+      for(const a of rows){
+        try{
+          const l = await apiGET(`${API}/accounts/${a.acc_no}/locker`);
+          lockerMap[a.acc_no] = l.locker_key;
+        }catch(e){
+          lockerMap[a.acc_no] = null;
+        }
+      }
+
+      tbody.innerHTML = rows.map(a => `
         <tr>
           <td><span class="pill">${a.acc_no}</span></td>
           <td>${escapeHtml(a.name)}</td>
           <td><span class="pill">${toMoney(a.balance)}</span></td>
-          <td style="color:#86efac; font-weight:800;">ACTIVE</td>
+          <td>${lockerMap[a.acc_no] ? `<span class="pill">${lockerMap[a.acc_no]}</span>` : `<span style="color:#64748b;">None</span>`}</td>
         </tr>
       `).join("");
     }
     catch(err){
-      tbody.innerHTML = `
+      tbody.innerHTML = `<tr><td colspan="4" style="padding:18px; color:#991b1b;">Backend not reachable.</td></tr>`;
+    }
+  }
+
+  async function loadTx(){
+    const accNo = Number(document.getElementById("txAcc").value);
+    const tbodyTx = document.getElementById("tbodyTx");
+
+    if(!accNo || accNo <= 0){
+      tbodyTx.innerHTML = `<tr><td colspan="5" style="padding:18px; color:#475569;">Account number enter kar.</td></tr>`;
+      return;
+    }
+
+    try{
+      const tx = await apiGET(`${API}/accounts/${accNo}/transactions`);
+      const last = tx.slice(0, 20);
+
+      if(last.length === 0){
+        tbodyTx.innerHTML = `<tr><td colspan="5" style="padding:18px; color:#475569;">No transactions found.</td></tr>`;
+        return;
+      }
+
+      tbodyTx.innerHTML = last.map(t => `
         <tr>
-          <td colspan="4" style="padding:18px; color:#fecaca;">
-            Backend not reachable. Start server.js
-          </td>
+          <td><span class="pill">${t.type}</span></td>
+          <td>${toMoney(t.amount)}</td>
+          <td>${toMoney(t.before_balance)}</td>
+          <td>${toMoney(t.after_balance)}</td>
+          <td>${new Date(t.created_at).toLocaleString()}</td>
         </tr>
-      `;
+      `).join("");
+    }
+    catch(err){
+      tbodyTx.innerHTML = `<tr><td colspan="5" style="padding:18px; color:#991b1b;">${err.message}</td></tr>`;
     }
   }
 
   async function wipeAll(){
-    if(confirm("Sure? All bank data will be deleted from MySQL.")){
-      try{
-        await apiDELETE(`${API}/wipe`);
-        setMsg("All data wiped from MySQL.", "warn");
-        await render();
-      }catch(err){
-        setMsg(err.message, "bad");
-      }
-    }
-  }
-
-  async function exportJSON(){
+    if(!confirm(T[lang()].confirmWipe)) return;
     try{
-      const db = await apiGET(`${API}/accounts`);
-      const text = JSON.stringify(db, null, 2);
-      await navigator.clipboard.writeText(text);
-      setMsg("Exported JSON copied to clipboard ✅", "ok");
+      const r = await apiDELETE(`${API}/wipe`);
+      setMsg(r.msg, "warn");
+      await render();
     }catch(err){
       setMsg(err.message, "bad");
     }
   }
 
-  onOpChange();
-  render();
+  function applyLang(){
+    setMsg(T[lang()].ready, "muted");
+    render();
+  }
+
+  toggleFields();
+  applyLang();
 </script>
 </body>
 </html>
